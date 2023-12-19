@@ -1,62 +1,102 @@
 package com.study.hibernate.vender.entity;
 
 import com.study.hibernate.catalog.entity.Catalog;
+import com.study.hibernate.order.entity.Order;
 import jakarta.persistence.*;
 import lombok.Getter;
 import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.Comment;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * 거래처(Vender) Entity
+ * 테이블명 : vender_tb
+ * 외래키
+ *  1. 없음
+ * 인덱스
+ *  1. 없음
+ */
 @Entity
 @Getter
+@Comment("거래처")
 @Table(name = "vender_tb")
 public class Vender {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "vender_no", nullable = false, columnDefinition = "BIGINT COMMENT '제조사PK'")
+  @Comment("PK")
+  @Column(name = "vender_no", nullable = false)
   private Long venderNo;
-  @Column(name = "vender_nm", nullable = false, columnDefinition = "VARCHAR(120) COMMENT '제조사명'")
+  @Comment("제조사명")
+  @Column(name = "vender_nm", nullable = false, length = 120)
   private String venderNm;
-  @Column(name = "business_nm", columnDefinition = "VARCHAR(120) COMMENT '사업자명'")
+  @Comment("사업자명")
+  @Column(name = "business_nm", length = 120)
   private String businessNm;
-  @Column(name = "agent_cel", columnDefinition = "VARCHAR(50) COMMENT '대표자_연락처'")
+  @Comment("대표자_연락처")
+  @Column(name = "agent_cel", length = 50)
   private String agentCel;
-  @Column(name = "vat_cd", columnDefinition = "VARCHAR(20) COMMENT '부가세적용률'")
+  @Comment("부가세적용코드")
+  @Column(name = "vat_cd", length = 20)
   private String vatCd;
-  @Column(name = "melt_cd", columnDefinition = "VARCHAR(20) COMMENT '매입해라'")
+  @Comment("매입해리")
+  @Column(name = "melt_cd", length = 20)
   private String meltCd;
-  @Column(name = "vender_fax", columnDefinition = "VARCHAR(50) COMMENT '팩스번호'")
+  @Comment("팩스번호")
+  @Column(name = "vender_fax", length = 50)
   private String venderFax;
-  @Column(name = "vender_cel1", columnDefinition = "VARCHAR(50) COMMENT '연락처1'")
+  @Comment("연락처1")
+  @Column(name = "vender_cel1", length = 50)
   private String venderCel1;
-  @Column(name = "vender_cel2", columnDefinition = "VARCHAR(50) COMMENT '연락처2'")
+  @Comment("연락처2")
+  @Column(name = "vender_cel2", length = 50)
   private String venderCel2;
-  @Column(name = "manager_nm", columnDefinition = "VARCHAR(120) COMMENT '담당자명'")
+  @Comment("담당자명")
+  @Column(name = "manager_nm", length = 120)
   private String managerNm;
-  @Column(name = "manager_cel", columnDefinition = "VARCHAR(50) COMMENT '담당자_연락처'")
+  @Comment("담당자_연락처")
+  @Column(name = "manager_cel", length = 50)
   private String managerCel;
-  @Column(name = "manager_email", columnDefinition = "VARCHAR(120) COMMENT '담당자_이메일'")
+  @Comment("담당자_이메일")
+  @Column(name = "manager_email", length = 120)
   private String managerEmail;
-  @Column(name = "etc", columnDefinition = "VARCHAR(2000) COMMENT '비고'")
+  @Comment("비고")
+  @Column(name = "etc", length = 2000)
   private String etc;
-  @Column(name = "commerce", columnDefinition = "VARCHAR(300) COMMENT '통상처'")
+  @Comment("통상처")
+  @Column(name = "commerce", length = 300)
   private String commerce;
+  @Comment("삭제여부")
   @ColumnDefault("'N'")
-  @Column(name = "del_yn", nullable = false, columnDefinition = "VARCHAR(4) COMMENT '삭제여부'")
+  @Column(name = "del_yn", nullable = false, length = 4)
   private String delYn;
-  @Column(name = "inpt_id", nullable = false, columnDefinition = "VARCHAR(30) COMMENT '등록자'")
+  @Comment("등록자")
+  @Column(name = "inpt_id", nullable = false, length = 30)
   private String inptId;
-  @Column(name = "inpt_dt", nullable = false, columnDefinition = "DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT '등록일'")
+  @Comment("등록일")
+  @Column(name = "inpt_dt", nullable = false, columnDefinition = "DATETIME DEFAULT CURRENT_TIMESTAMP")
   private LocalDateTime inptDt = LocalDateTime.now();
-  @Column(name = "updt_id", columnDefinition = "VARCHAR(30) COMMENT '수정자'")
+  @Comment("수정자")
+  @Column(name = "updt_id", length = 30)
   private String updtId;
-  @Column(name = "updt_dt", columnDefinition = "DATETIME COMMENT '수정일'")
+  @Comment("수정일")
+  @Column(name = "updt_dt", columnDefinition = "DATETIME")
   private LocalDateTime updtDt;
 
+  /**
+   * Vender : Catalog = 1:N
+   * - 거래처번호(vender_no) FK
+   */
   @OneToMany(mappedBy = "vender")
   private List<Catalog> catalogs = new ArrayList<>();
 
+  /**
+   * Vender : Order = 1:N
+   * - 거래처번호(vender_no) FK
+   */
+  @OneToMany(mappedBy = "vender")
+  private List<Order> orders = new ArrayList<>();
 
 }

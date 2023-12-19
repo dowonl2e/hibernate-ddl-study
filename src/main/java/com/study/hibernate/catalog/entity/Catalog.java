@@ -4,65 +4,97 @@ import com.study.hibernate.vender.entity.Vender;
 import jakarta.persistence.*;
 import lombok.Getter;
 import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.Comment;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
 
+/**
+ * 카다로그(Catalog) Entity
+ * 테이블명 : catalog_tb
+ * 외래키(Foreign Key)
+ *  1. vender_tb(catalog_tb : vender_tb = n:1)
+ *  2. Column : vender_no(pk)
+ * 인덱스
+ *  1. model_id
+ */
 @Entity
 @Getter
+@Comment("카다로그")
 @Table(
     name = "catalog_tb",
-    indexes = @Index(name = "catalog_tb_idx1", columnList = "model_id")
+    indexes = {
+        @Index(name = "catalog_tb_idx2", columnList = "model_id")
+    }
 )
 public class Catalog {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Comment("PK")
   @Column(name = "catalog_no", nullable = false, columnDefinition = "BIGINT COMMENT '카다로그PK'")
   private Long catalogNo;
-  @Column(name = "vender_no", columnDefinition = "BIGINT COMMENT '제조사FK'")
+  @Comment("제조사FK")
+  @Column(name = "vender_no")
   private Long venderNo;
-  @Column(name = "model_id", nullable = false, columnDefinition = "VARCHAR(100) COMMENT '모델번호'")
+  @Comment("모델번호")
+  @Column(name = "model_id", nullable = false, length = 100)
   private String modelId;
-  @Column(name = "model_nm", columnDefinition = "VARCHAR(200) COMMENT '모델명'")
+  @Comment("모델명")
+  @Column(name = "model_nm", length = 200)
   private String modelNm;
-  @Column(name = "stdd_material_cd", columnDefinition = "VARCHAR(20) COMMENT '표준재질'")
+  @Comment("표준재질")
+  @Column(name = "stdd_material_cd", length = 20)
   private String stddMaterialCd;
-  @Column(name = "stdd_weight", columnDefinition = "VARCHAR(40) COMMENT '표준중량'")
+  @Comment("표준중량")
+  @Column(name = "stdd_weight", length = 40)
   private String stddWeight;
-  @Column(name = "stdd_color_cd", columnDefinition = "VARCHAR(20) COMMENT '표준색상'")
+  @Comment("표준색상")
+  @Column(name = "stdd_color_cd", length = 20)
   private String stddColorCd;
-  @Column(name = "stdd_size", columnDefinition = "VARCHAR(80) COMMENT '표준사이즈'")
+  @Comment("표준사이즈")
+  @Column(name = "stdd_size", length = 80)
   private String stddSize;
-  @Column(name = "odr_notice", columnDefinition = "VARCHAR(2000) COMMENT '유의사항'")
+  @Comment("유의사항")
+  @Column(name = "odr_notice", length = 2000)
   private String odrNotice;
-  @CreationTimestamp
-  @Column(name = "reg_dt", columnDefinition = "DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT '등록일_수동'")
-  private String regDt;
-  @Column(name = "basic_idst", columnDefinition = "INT COMMENT '기본공임'")
+  @Comment("등록일_수동")
+  @Column(name = "reg_dt", columnDefinition = "DATETIME")
+  private LocalDateTime regDt;
+  @Comment("기본공임")
+  @Column(name = "basic_idst")
   private Integer basicIdst;
-  @Column(name = "main_price", columnDefinition = "INT COMMENT '메인가격'")
+  @Comment("메인가격")
+  @Column(name = "main_price")
   private Integer mainPrice;
-  @Column(name = "sub_price", columnDefinition = "INT COMMENT '보조가격'")
+  @Comment("보조가격")
+  @Column(name = "sub_price")
   private Integer subPrice;
-  @Column(name = "total_price", columnDefinition = "INT COMMENT '전체구매단가'")
+  @Comment("전체구매단가")
+  @Column(name = "total_price")
   private Integer totalPrice;
-
+  @Comment("삭제여부")
   @ColumnDefault("'N'")
-  @Column(name = "del_yn", nullable = false, columnDefinition = "VARCHAR(4) COMMENT '삭제여부'")
+  @Column(name = "del_yn", nullable = false, length = 4)
   private String delYn = "N";
-  @Column(name = "inpt_id", nullable = false, columnDefinition = "VARCHAR(30) COMMENT '등록자'")
+  @Comment("등록자")
+  @Column(name = "inpt_id", nullable = false, length = 30)
   private String inptId;
-  @CreationTimestamp
-  @Column(name = "inpt_dt", nullable = false, columnDefinition = "DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT '등록일'")
+  @Comment("등록일")
+  @Column(name = "inpt_dt", nullable = false, columnDefinition = "DATETIME DEFAULT CURRENT_TIMESTAMP")
   private LocalDateTime inptDt = LocalDateTime.now();
-  @Column(name = "updt_id", columnDefinition = "VARCHAR(30) COMMENT '수정자'")
+  @Comment("수정자")
+  @Column(name = "updt_id", length = 30)
   private String updtId;
-  @UpdateTimestamp
-  @Column(name = "updt_dt", columnDefinition = "DATETIME COMMENT '수정일'")
+  @Comment("수정일")
+  @Column(name = "updt_dt", columnDefinition = "DATETIME")
   private LocalDateTime updtDt;
 
+  /**
+   * Catalog : Vender = N:1
+   * - 거래처번호(vender_no) FK
+   */
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(
       name = "vender_no", referencedColumnName = "vender_no"
