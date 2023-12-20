@@ -1,6 +1,8 @@
 package com.study.hibernate.customer.entity;
 
 import com.study.hibernate.order.entity.Order;
+import com.study.hibernate.repair.entity.Repair;
+import com.study.hibernate.stock.entity.Stock;
 import jakarta.persistence.*;
 import lombok.Getter;
 import org.hibernate.annotations.ColumnDefault;
@@ -13,7 +15,7 @@ import java.util.List;
 @Entity
 @Getter
 @Comment("고객")
-@Table(name = "customer_tb")
+@Table(name = "tb_customer")
 public class Customer {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -77,10 +79,26 @@ public class Customer {
   private LocalDateTime updtDt;
 
   /**
+   * 주문 FK
    * Customer : Order = 1:N
    * - 고객번호(customer_no) FK
    */
   @OneToMany(mappedBy = "customer")
   private List<Order> orders = new ArrayList<>();
 
+  /**
+   * 수리 FK
+   * Customer : Repair = 1:N
+   * - 고객번호(customer_no) FK
+   */
+  @OneToMany(mappedBy = "customer")
+  private List<Repair> repairs = new ArrayList<>();
+
+  /**
+   * 재고 FK
+   * Customer : Stock = 1:N
+   * - 고객번호(customer_no) FK
+   */
+  @OneToMany(mappedBy = "customer")
+  private List<Stock> stocks = new ArrayList<>();
 }

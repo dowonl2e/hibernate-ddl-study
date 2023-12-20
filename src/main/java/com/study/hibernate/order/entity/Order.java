@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @Entity
 @Getter
 @Comment("주문")
-@Table(name = "order_tb")
+@Table(name = "tb_order")
 public class Order {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -102,6 +102,7 @@ public class Order {
   private LocalDateTime updtDt;
 
   /**
+   * 주문, 고객 FK
    * Order : Customer = N:1
    * - 고객번호(customer_no) FK
    */
@@ -113,6 +114,7 @@ public class Order {
   private Customer customer;
 
   /**
+   * 주문, 거래처 FK
    * Order : Vender = N:1
    * - 거레처번호(vender_no) FK
    */

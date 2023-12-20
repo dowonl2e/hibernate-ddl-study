@@ -1,14 +1,16 @@
 package com.study.hibernate.catalog.entity;
 
+import com.study.hibernate.stock.entity.Stock;
 import com.study.hibernate.vender.entity.Vender;
 import jakarta.persistence.*;
+import jakarta.persistence.Index;
+import jakarta.persistence.Table;
 import lombok.Getter;
-import org.hibernate.annotations.ColumnDefault;
-import org.hibernate.annotations.Comment;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
+import org.hibernate.annotations.*;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 카다로그(Catalog) Entity
@@ -23,9 +25,9 @@ import java.time.LocalDateTime;
 @Getter
 @Comment("카다로그")
 @Table(
-    name = "catalog_tb",
+    name = "tb_catalog",
     indexes = {
-        @Index(name = "catalog_tb_idx2", columnList = "model_id")
+        @Index(name = "tb_catalog_idx2", columnList = "model_id")
     }
 )
 public class Catalog {
@@ -92,6 +94,15 @@ public class Catalog {
   private LocalDateTime updtDt;
 
   /**
+   * 카다로그스톤 FK
+   * Catalog : CatalogStone = 1 : N
+   * - 카다로그번호(catalog_no) FK
+   */
+  @OneToMany(mappedBy = "catalog")
+  private List<CatalogStone> catalogStones = new ArrayList<>();
+
+  /**
+   * 카다로그, 고객 FK
    * Catalog : Vender = N:1
    * - 거래처번호(vender_no) FK
    */
@@ -102,4 +113,11 @@ public class Catalog {
   )
   private Vender vender;
 
+  /**
+   * 재고 FK
+   * Catalog : Stock = 1:N
+   * - 카다로그번호(catalog_no) FK
+   */
+  @OneToMany(mappedBy = "catalog")
+  private List<Stock> stocks = new ArrayList<>();
 }

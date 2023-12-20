@@ -1,7 +1,9 @@
 package com.study.hibernate.vender.entity;
 
+import com.study.hibernate.cash.entity.Cash;
 import com.study.hibernate.catalog.entity.Catalog;
 import com.study.hibernate.order.entity.Order;
+import com.study.hibernate.stock.entity.Stock;
 import jakarta.persistence.*;
 import lombok.Getter;
 import org.hibernate.annotations.ColumnDefault;
@@ -22,7 +24,7 @@ import java.util.List;
 @Entity
 @Getter
 @Comment("거래처")
-@Table(name = "vender_tb")
+@Table(name = "tb_vender")
 public class Vender {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -86,6 +88,15 @@ public class Vender {
   private LocalDateTime updtDt;
 
   /**
+   * 거래처결재 FK
+   * Vender : VenderPay = 1:N
+   * - 거래처번호(vender_no) FK
+   */
+  @OneToMany(mappedBy = "vender")
+  private List<VenderPay> venderPays = new ArrayList<>();
+
+  /**
+   * 거래처, 카다로그 FK
    * Vender : Catalog = 1:N
    * - 거래처번호(vender_no) FK
    */
@@ -93,10 +104,26 @@ public class Vender {
   private List<Catalog> catalogs = new ArrayList<>();
 
   /**
+   * 거래처, 주문 FK
    * Vender : Order = 1:N
    * - 거래처번호(vender_no) FK
    */
   @OneToMany(mappedBy = "vender")
   private List<Order> orders = new ArrayList<>();
 
+  /**
+   * 재고 FK
+   * Vender : Stock = 1:N
+   * - 거래처번호(vender_no) FK
+   */
+  @OneToMany(mappedBy = "vender")
+  private List<Stock> stocks = new ArrayList<>();
+
+  /**
+   * 금/현금 FK
+   * Vender : Cash = 1:N
+   * - 거래처번호(vender_no) FK
+   */
+  @OneToMany(mappedBy = "vender")
+  private List<Cash> cashes = new ArrayList<>();
 }
