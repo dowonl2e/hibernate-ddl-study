@@ -18,13 +18,18 @@ spring:
     show-sql: true # SQL 쿼리 출력
     generate-ddl: true
     hibernate:
-      ddl-auto: create
+      # create의 경우 schema.sql, data.sql 둘 다 있을 경우 schema -> data 순으로 실행
+      #
+      ddl-auto: update
       naming:
         implicit-strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyLegacyJpaImpl
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
-        #physical-strategy: com.jewelry.config.strategy.CustomCamelCaseToUnderscoresNamingStrategy
     properties:
       hibernate:
         format_sql: true  # SQL 쿼리문을 눈이 보기 쉽게 출력
         highlight_sql: true
         use_sql_comments: false
+    defer-datasource-initialization: true # gradle 2.5 이상 data.sql 파일의 스크립트는 Hibernate가 초기화 되기 전에 실행 Hibernate에 의해 생성된 스키마에 데이터를 추가하려면 true로 설정
+  sql:
+    init:
+      mode: always  # classpath 경로의 sql 파일을 무조건 실행
