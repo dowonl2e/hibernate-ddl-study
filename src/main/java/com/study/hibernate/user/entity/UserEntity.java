@@ -54,4 +54,5 @@ public class UserEntity {
   @Comment("마지막로그인일")
   @Column(name = "last_login_dt", columnDefinition = "DATETIME")
   private LocalDateTime lastLoginDt;
+
 }
