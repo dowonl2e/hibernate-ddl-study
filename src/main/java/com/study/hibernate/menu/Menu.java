@@ -1,9 +1,6 @@
 package com.study.hibernate.menu;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Getter;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.Comment;
@@ -13,7 +10,10 @@ import java.time.LocalDateTime;
 @Entity
 @Getter
 @Comment("메뉴")
-@Table(name = "tb_menu")
+@Table(
+    name = "tb_menu",
+    indexes = @Index(name = "tb_menu_idx1", columnList = "up_menu_id")
+)
 public class Menu {
   @Id
   @Comment("PK")

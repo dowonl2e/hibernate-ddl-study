@@ -24,12 +24,7 @@ import java.util.List;
 @Entity
 @Getter
 @Comment("카다로그")
-@Table(
-    name = "tb_catalog",
-    indexes = {
-        @Index(name = "tb_catalog_idx2", columnList = "model_id")
-    }
-)
+@Table(name = "tb_catalog")
 public class Catalog {
 
   @Id
